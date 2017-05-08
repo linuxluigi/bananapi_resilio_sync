@@ -134,3 +134,5 @@ ssh pi@bpi-iot-ros 'bash <(wget -qO- https://raw.githubusercontent.com/linuxluig
 ```bash
 ssh pi@bpi-iot-ros 'bash <(wget -qO- https://raw.githubusercontent.com/linuxluigi/bananapi_resilio_sync/master/script/install.sh)'
 ```
+
+Login via ```pi:8888``` and don't forget to set the default sync folder at ```/resilio-sync/server```

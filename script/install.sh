@@ -7,6 +7,9 @@ sudo apt-get -y dist-upgrade
 # user settings
 sudo dpkg-reconfigure tzdata
 
+# change password
+passwd
+
 # set hostname
 read -p "Enter new hostname [bpi-iot-ros]: " hostname
 hostname=${hostname:-bpi-iot-ros}
@@ -17,13 +20,10 @@ sudo sed -i "s/::1         localhost bpi-iot-ros ip6-localhost ip6-loopback/::1 
 sudo sh -c "echo $hostname > /etc/hostname"
 sudo hostname -F /etc/hostname
 
-# syncron ntp time hourly
+# cron ntp time hourly
 sudo apt-get -y install ntp ntpdate
 ntpdate -s 0.de.pool.ntp.org
-
-sudo sh -c "echo '#!/bin/bash' > /etc/cron.hourly/ntpdate"
-sudo sh -c "echo 'ntpdate -s 0.de.pool.ntp.org' >> /etc/cron.hourly/ntpdate"
-
+sudo wget https://raw.githubusercontent.com/linuxluigi/bananapi_resilio_sync/master/cron/hourly/ntpdate.sh -O /etc/cron.hourly/ntpdate
 
 # activate auto install security updates
 sudo apt-get -y install unattended-upgrades
@@ -33,14 +33,33 @@ sudo sh -c "echo 'APT::Periodic::Download-Upgradeable-Packages "1";' >> /etc/apt
 sudo sh -c "echo 'APT::Periodic::AutocleanInterval "7";' >> /etc/apt/apt.conf.d/10periodic"
 sudo sh -c "echo 'APT::Periodic::Unattended-Upgrade "1";' >> /etc/apt/apt.conf.d/10periodic"
 
-# secure
+# install Resilio Sync
+# https://help.getsync.com/hc/en-us/articles/206178924
+echo 'deb http://linux-packages.resilio.com/resilio-sync/deb resilio-sync non-free' | sudo tee --append /etc/apt/sources.list.d/resilio-sync.list > /dev/null
+wget -qO - https://linux-packages.resilio.com/resilio-sync/key.asc | sudo apt-key add -
+sudo apt-get update
+sudo apt-get install -y resilio-sync
+# user rslsync
+sudo systemctl enable resilio-sync
+
+# format usb hdd
+read -p "Make sure the usb hdd is insert and it will be erase completely [Enter]: " format
+sudo mkfs.ext4 /dev/sda
+# create mount point
+sudo mkdir /resilio-sync
+# mount
+uuid="$(sudo blkid -s UUID -o value /dev/sda)"
+sudo sh -c "echo '/dev/sda /resilio-sync ext4 defaults,noatime,nodiratime,commit=600,errors=remount-ro 0 1' >> /etc/fstab"
+sudo mount -a
+
+# create folder structure
+sudo mkdir /resilio-sync/server
+sudo mkdir /resilio-sync/backup
+sudo chown -R rslsync:rslsync /resilio-sync
+
 # backup
+sudo apt-get install -y rsnapshot
+sudo sh -c "echo 'backup\t/resilio-sync/server/\tlocalhost' >> /etc/rsnapshot.conf"
 
-# add cronejob
-# time update
-# mount hdd
-
-# change hostname
-
-# format hdd
-# install resilio
+# add backup cron jobs
+sudo wget https://raw.githubusercontent.com/linuxluigi/bananapi_resilio_sync/master/cron/hourly/rsnapshot.sh -O /etc/cron.hourly/rsnapshot
