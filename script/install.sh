@@ -24,6 +24,7 @@ sudo hostname -F /etc/hostname
 sudo apt-get -y install ntp ntpdate
 ntpdate -s 0.de.pool.ntp.org
 sudo wget https://raw.githubusercontent.com/linuxluigi/bananapi_resilio_sync/master/cron/hourly/ntpdate.sh -O /etc/cron.hourly/ntpdate
+sudo chmod +x /etc/cron.hourly/ntpdate
 
 # activate auto install security updates
 sudo apt-get -y install unattended-upgrades
@@ -63,3 +64,4 @@ sudo sh -c "echo 'backup\t/resilio-sync/server/\tlocalhost' >> /etc/rsnapshot.co
 
 # add backup cron jobs
 sudo wget https://raw.githubusercontent.com/linuxluigi/bananapi_resilio_sync/master/cron/hourly/rsnapshot.sh -O /etc/cron.hourly/rsnapshot
+sudo chmod +x /etc/cron.hourly/rsnapshot
