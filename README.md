@@ -122,6 +122,13 @@ pi@bpi-iot-ros:~$
 
 When it was successful reboot your device with ```sudo reboot``` and log into your device after it's up again.
 
+# Add your Public key to the Banana Pi
+
+```bash
+bash <(wget -qO- https://raw.githubusercontent.com/linuxluigi/bananapi_resilio_sync/master/sudo.sh)
+cat ~/.ssh/id_rsa.pub | ssh pi@bpi-iot-ros 'cat>> ~/.ssh/authorized_keys' 
+```
+
 # Run the Script
 
 ```bash
