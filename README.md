@@ -125,12 +125,12 @@ When it was successful reboot your device with ```sudo reboot``` and log into yo
 # Add your Public key to the Banana Pi
 
 ```bash
-bash <(wget -qO- https://raw.githubusercontent.com/linuxluigi/bananapi_resilio_sync/master/sudo.sh)
+ssh pi@bpi-iot-ros 'bash <(wget -qO- https://raw.githubusercontent.com/linuxluigi/bananapi_resilio_sync/master/script/sudo.sh)'
 cat ~/.ssh/id_rsa.pub | ssh pi@bpi-iot-ros 'cat>> ~/.ssh/authorized_keys' 
+ssh pi@bpi-iot-ros 'bash <(wget -qO- https://raw.githubusercontent.com/linuxluigi/bananapi_resilio_sync/master/script/sshd_config.sh)'
 ```
 
 # Run the Script
-
 ```bash
-bash <(wget -qO- https://raw.githubusercontent.com/linuxluigi/bananapi_resilio_sync/master/install.sh)
+ssh pi@bpi-iot-ros 'bash <(wget -qO- https://raw.githubusercontent.com/linuxluigi/bananapi_resilio_sync/master/script/install.sh)'
 ```
