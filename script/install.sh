@@ -20,6 +20,9 @@ sudo sed -i "s/::1         localhost bpi-iot-ros ip6-localhost ip6-loopback/::1 
 sudo sh -c "echo $hostname > /etc/hostname"
 sudo hostname -F /etc/hostname
 
+# install anacron
+sudo apt-get -y install anacron
+
 # cron ntp time hourly
 sudo apt-get -y install ntp ntpdate
 ntpdate -s 0.de.pool.ntp.org
@@ -63,5 +66,12 @@ sudo apt-get install -y rsnapshot
 sudo sh -c "echo 'backup\t/resilio-sync/server/\tlocalhost' >> /etc/rsnapshot.conf"
 
 # add backup cron jobs
+# hourly
 sudo wget https://raw.githubusercontent.com/linuxluigi/bananapi_resilio_sync/master/cron/hourly/rsnapshot.sh -O /etc/cron.hourly/rsnapshot
 sudo chmod +x /etc/cron.hourly/rsnapshot
+# daily
+sudo wget https://raw.githubusercontent.com/linuxluigi/bananapi_resilio_sync/master/cron/daily/rsnapshot.sh -O /etc/cron.daily/rsnapshot
+sudo chmod +x /etc/cron.daily/rsnapshot
+# weekly
+sudo wget https://raw.githubusercontent.com/linuxluigi/bananapi_resilio_sync/master/cron/weekly/rsnapshot.sh -O /etc/cron.weekly/rsnapshot
+sudo chmod +x /etc/cron.weekly/rsnapshot
