@@ -64,6 +64,7 @@ sudo chown -R rslsync:rslsync /resilio-sync
 # backup
 sudo apt-get install -y rsnapshot
 sudo sh -c "echo 'backup\t/resilio-sync/server/\tlocalhost' >> /etc/rsnapshot.conf"
+sudo sed -i 's!snapshot_root\t/var/cache/rsnapshot/!snapshot_root\t/resilio-sync/server/backup!g' /etc/rsnapshot.conf
 
 # add backup cron jobs
 # hourly
