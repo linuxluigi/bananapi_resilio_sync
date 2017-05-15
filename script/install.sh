@@ -76,3 +76,7 @@ sudo chmod +x /etc/cron.daily/rsnapshot
 # weekly
 sudo wget https://raw.githubusercontent.com/linuxluigi/bananapi_resilio_sync/master/cron/weekly/rsnapshot.sh -O /etc/cron.weekly/rsnapshot
 sudo chmod +x /etc/cron.weekly/rsnapshot
+
+# daily reboot the pi
+sudo wget https://raw.githubusercontent.com/linuxluigi/bananapi_resilio_sync/master/cron/daily/reboot.sh -O /etc/cron.daily/reboot
+sudo chmod +x /etc/cron.daily/reboot
